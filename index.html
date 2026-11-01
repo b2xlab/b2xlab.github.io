@@ -1,0 +1,513 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>B2X</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Tektur:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: one light look. Matte grey ground with fine grain, soft orange glows behind frosted-glass panels.
+   Squared extended headlines echo the logo letterforms; orange only for actions and marks; 1px lines; 30px pill buttons. */
+:root{
+  --bg:#e9e8e6; --fg:#1a1e21; --muted:#62666b; --line:rgba(26,30,33,.14);
+  --accent:#fd5803; --accent-ink:#b83c00;
+  --display:'Tektur','Exo 2','Eurostile',Arial,sans-serif;
+  --font:'Onest',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .12 0 0 0 0 .13 0 0 0 .55 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background-color:var(--bg);background-image:var(--noise);background-size:240px 240px;color:var(--fg);font-family:var(--font);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0;padding:0}
+ul,ol{list-style:none}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;letter-spacing:-.01em;line-height:1.1}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.w{max-width:1560px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sec{padding-block:clamp(56px,8vw,112px)}
+.band{background:rgba(26,30,33,.05)}
+.eyebrow{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;line-height:1.4}
+h2{font-size:clamp(28px,4.4vw,64px)}
+.sub{margin-top:16px;font-size:clamp(17px,1.6vw,21px);color:var(--muted);max-width:52ch}
+
+/* soft glows that sit behind the glass */
+.glow{position:relative;isolation:isolate;overflow:clip}
+.glow::before,.glow::after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}
+.glow::before{width:min(72vw,900px);aspect-ratio:1;left:var(--gx,62%);top:var(--gy,-18%);background:radial-gradient(circle,rgba(253,88,3,.13),rgba(253,88,3,0) 66%)}
+.glow::after{width:min(56vw,700px);aspect-ratio:1;left:var(--hx,-14%);top:var(--hy,40%);background:radial-gradient(circle,rgba(26,30,33,.08),rgba(26,30,33,0) 66%)}
+
+/* frosted glass */
+.glass,.panel,.sc li,.kpi,.case,.layer,.acc details,.cta-card,.start{
+  background:rgba(255,255,255,.42);
+  -webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);
+  border:1px solid rgba(255,255,255,.85);border-radius:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 18px 48px -22px rgba(26,30,33,.22);
+}
+
+/* buttons: 30px radius, 1px outline */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.7em;background:var(--accent);color:#1a1e21;border:1px solid var(--accent);border-radius:30px;padding:16px 28px;font:500 16px/1.1 var(--font);text-decoration:none;cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-dark{background:var(--fg);color:#fff;border-color:var(--fg)}
+.btn-line{background:rgba(255,255,255,.25);color:var(--fg);border-color:var(--fg)}
+.btn-sm{padding:11px 20px;font-size:15px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+
+/* logo */
+.lg{display:block;width:clamp(150px,16vw,230px);height:auto}
+.lg-i{fill:var(--fg)}
+.lg-o{fill:var(--accent)}
+.mk{display:block;width:100%;height:auto}
+
+/* header */
+.bar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px 32px;padding-block:20px}
+.links{display:flex;justify-content:center;gap:clamp(16px,5vw,80px)}
+.links a{font-size:clamp(15px,1.4vw,19px);font-weight:500;color:var(--muted);text-decoration:none}
+.links a:hover{color:var(--fg)}
+.bar .btn{padding:12px 22px;font-size:15px}
+
+/* hero */
+.hero{padding-top:clamp(36px,6vw,88px);text-align:center}
+.free{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;margin-bottom:28px;font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
+.free b{color:var(--accent-ink);font-weight:600}
+.free span{color:var(--muted)}
+.free b + span{border-left:1px solid var(--line);padding-left:18px}
+.hero h1{font-size:clamp(32px,5.8vw,92px);max-width:16ch;margin-inline:auto}
+.hero p.lead{max-width:56ch;margin:28px auto 36px;font-size:clamp(17px,1.6vw,21px);color:var(--muted)}
+.hero .btns{justify-content:center}
+.hero .mk{margin-top:clamp(40px,6vw,88px)}
+.hero-pad{padding-bottom:clamp(32px,5vw,64px)}
+
+/* route */
+.route-head{display:grid;grid-template-columns:1fr 1.5fr;gap:24px 48px;align-items:end;margin-bottom:clamp(40px,6vw,88px)}
+.route{display:grid;grid-template-columns:repeat(6,1fr);gap:24px;position:relative}
+.route::before{content:"";position:absolute;left:32px;right:0;top:31px;height:1px;background:rgba(26,30,33,.45)}
+.route li{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0}
+.route .dot{width:64px;height:64px;border-radius:50%;border:1px solid var(--fg);background:var(--accent);display:grid;place-items:center;font-family:var(--display);font-size:18px;margin-bottom:18px}
+.route li:last-child .dot{background:var(--fg);color:var(--accent)}
+.route h3{font-size:clamp(19px,1.9vw,26px)}
+.route p{font-size:15px;line-height:1.4;color:var(--muted)}
+.route-foot{margin-top:clamp(40px,5vw,72px);display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between}
+.route-foot p{max-width:38ch;font-family:var(--display);font-size:clamp(19px,2.1vw,28px);line-height:1.2}
+
+/* where it breaks */
+.break{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:32px clamp(24px,5vw,80px);margin-top:clamp(32px,4vw,56px)}
+.tabs{border-top:1px solid var(--fg);align-self:start}
+.tab{display:flex;gap:18px;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--muted);font:500 clamp(19px,2vw,28px)/1.1 var(--display);padding:18px 0;cursor:pointer;transition:color .15s,padding .2s}
+.tab span{font:500 13px/1 var(--font);letter-spacing:.1em;min-width:2.4ch;color:var(--muted)}
+.tab:hover{color:var(--fg)}
+.tab[aria-selected="true"]{color:var(--fg);padding-left:14px;box-shadow:inset 3px 0 0 var(--accent)}
+.pcol{display:flex;flex-direction:column;gap:20px;min-width:0;align-items:flex-start}
+.panel{width:100%;padding:clamp(24px,3.4vw,48px);display:flex;flex-direction:column;gap:24px;min-width:0}
+.panel h3{font-size:clamp(24px,2.8vw,40px)}
+.panel .tag{font-size:12.5px;font-weight:600;color:var(--accent-ink);letter-spacing:.14em;text-transform:uppercase}
+.bad{display:grid}
+.bad li{display:flex;gap:14px;align-items:baseline;font-size:clamp(17px,1.6vw,21px);font-weight:500;padding:14px 0;border-top:1px solid var(--line)}
+.bad li::before{content:"";flex:none;width:9px;height:9px;background:var(--accent);transform:translateY(-1px) rotate(45deg)}
+.panel h4{font-size:12.5px;font-weight:500;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.panel .checks{margin-top:8px;font-size:clamp(17px,1.6vw,21px);font-weight:500;max-width:60ch}
+
+/* system scheme */
+.sys-head{display:grid;grid-template-columns:1fr 1.4fr;gap:24px 48px;align-items:end;margin-bottom:clamp(36px,5vw,72px)}
+.layers{position:relative;display:grid}
+.layer{position:relative;display:grid;grid-template-columns:72px minmax(0,.8fr) minmax(0,1.6fr);gap:12px 28px;align-items:center;padding:26px 28px}
+.layer + .layer{margin-top:44px}
+.layer + .layer::before{content:"";position:absolute;left:35px;top:-45px;height:44px;width:1px;background:var(--accent)}
+.layer + .layer::after{content:"";position:absolute;left:30px;top:-12px;width:11px;height:11px;border-right:1px solid var(--accent);border-bottom:1px solid var(--accent);transform:rotate(45deg)}
+.layer .n{width:44px;height:44px;border-radius:50%;background:var(--accent);color:#1a1e21;display:grid;place-items:center;font:500 16px/1 var(--display)}
+.layer h3{font-size:clamp(21px,2.4vw,34px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips li{padding:9px 16px;border:1px solid rgba(26,30,33,.28);background:rgba(255,255,255,.35);border-radius:30px;font-size:clamp(14px,1.3vw,17px);font-weight:500}
+.sys-foot{margin-top:36px;display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between}
+.sys-foot p{max-width:46ch;font-size:clamp(18px,1.8vw,24px);font-weight:500}
+
+/* directions */
+.sc-head{max-width:22ch;margin-top:16px}
+.sc-q{margin-top:20px;font-family:var(--display);font-size:clamp(18px,2vw,28px);color:var(--muted)}
+.sc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:clamp(32px,4vw,56px)}
+.sc li{padding:clamp(22px,2.4vw,36px);display:flex;flex-direction:column;gap:16px}
+.sc .ans{font-weight:600;color:var(--accent-ink)}
+.sc h3{font-size:clamp(22px,2.3vw,32px)}
+.sc p.d{font-size:clamp(16px,1.35vw,18px);margin-bottom:12px}
+.sc .btn{margin-top:auto;align-self:flex-start}
+
+/* method + logic steps */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:32px clamp(24px,5vw,80px)}
+.two-l{position:sticky;top:24px;align-self:start;display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+.steps li{display:grid;grid-template-columns:clamp(64px,8vw,110px) minmax(0,1fr);gap:8px 20px;padding-block:clamp(22px,3vw,38px);border-top:1px solid var(--fg)}
+.steps .no{font-size:13px;font-weight:500;letter-spacing:.1em;color:var(--muted);padding-top:.5em}
+.steps h3{font-size:clamp(22px,2.5vw,36px)}
+.steps p{grid-column:2;margin-top:6px;font-size:clamp(16px,1.5vw,20px);max-width:48ch}
+.steps .hyp{font-weight:600}
+.start{padding:clamp(22px,2.6vw,36px);margin-bottom:clamp(28px,4vw,56px);position:relative}
+.start::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;background:var(--accent);border-radius:3px}
+.start p{margin-top:12px;font-family:var(--display);font-size:clamp(21px,2.4vw,34px);line-height:1.15}
+
+/* catalog */
+.cat-head{display:grid;grid-template-columns:1fr 1.5fr;gap:24px 48px;align-items:end;margin-bottom:clamp(32px,5vw,64px)}
+.acc{display:grid;gap:12px}
+.acc details{padding:0 clamp(18px,2.4vw,32px)}
+.acc summary{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:clamp(20px,2.4vw,30px) 0;cursor:pointer;list-style:none;font-family:var(--display);font-weight:500;font-size:clamp(24px,3.2vw,46px);line-height:1.1}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary small{display:block;margin-top:8px;font:400 clamp(16px,1.5vw,20px)/1.3 var(--font);color:var(--muted)}
+.acc summary::after{content:"+";flex:none;width:clamp(40px,4vw,54px);height:clamp(40px,4vw,54px);display:grid;place-items:center;background:var(--accent);color:#1a1e21;border:1px solid var(--accent);font:400 26px/1 var(--font);border-radius:30px}
+.acc details[open] summary::after{content:"–"}
+.svcs{padding:0 0 clamp(14px,2vw,24px)}
+.svc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.8fr) minmax(190px,auto);gap:12px 28px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
+.svc h4{font-family:var(--display);font-weight:500;font-size:clamp(18px,1.7vw,24px);line-height:1.2}
+.svc p{font-size:clamp(15px,1.3vw,17px);color:var(--muted);max-width:56ch}
+.buy{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.price{font-family:var(--display);font-size:clamp(18px,1.7vw,24px);line-height:1.2;white-space:nowrap}
+.svc.free .price{color:var(--accent-ink)}
+.cat-end{margin-top:clamp(24px,3vw,40px);display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center}
+.cat-end p{font-family:var(--display);font-size:clamp(18px,2vw,26px);max-width:30ch;line-height:1.2}
+
+/* proof */
+.proof-head{margin-bottom:clamp(32px,5vw,64px)}
+.proof-head h2{margin-top:16px;max-width:18ch}
+.proof{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px}
+.case{padding:clamp(24px,3.4vw,48px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 32px;margin:0}
+.case dt{font-family:var(--display);font-size:clamp(17px,1.8vw,24px);line-height:1.2;margin-bottom:10px}
+.case dd{padding-top:12px;border-top:1px dashed rgba(26,30,33,.3);font-size:16px;color:var(--muted)}
+.kpis{display:grid;gap:16px}
+.kpi{padding:clamp(20px,2.4vw,32px);display:flex;flex-direction:column;justify-content:space-between;gap:20px;min-height:150px}
+.kpi strong{font-family:var(--display);font-weight:500;font-size:clamp(38px,4.6vw,66px);line-height:1;color:var(--accent-ink)}
+.kpi span{font-size:15px;color:var(--muted)}
+.proof-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:20px 36px;align-items:center;justify-content:space-between}
+.proof-foot p{max-width:52ch;font-size:clamp(17px,1.6vw,20px);font-weight:500}
+
+/* cta + footer */
+.cta-card{padding:clamp(28px,5vw,72px);display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px clamp(24px,5vw,80px);align-items:end}
+.cta-card h2{font-size:clamp(30px,5.2vw,78px);margin-top:16px}
+.cta-card p{font-size:clamp(18px,1.8vw,23px);font-weight:500;margin-bottom:28px}
+.cta-card .alt{margin:20px 0 0;font-size:16px;font-weight:400;color:var(--muted)}
+.cta-card .alt a{color:var(--fg);font-weight:500}
+footer{padding-top:28px}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;align-items:center;gap:16px 32px;padding-bottom:8px}
+.foot .links{justify-content:flex-start}
+footer .mk{margin-top:28px}
+footer .w{padding-bottom:clamp(16px,3vw,32px)}
+
+@media (max-width:980px){
+  .route-head,.sys-head,.cat-head,.two,.cta-card,.break,.proof{grid-template-columns:minmax(0,1fr)}
+  .two-l{position:static}
+  .sc{grid-template-columns:minmax(0,1fr)}
+  .route{grid-template-columns:minmax(0,1fr);gap:0}
+  .route::before{left:32px;right:auto;top:32px;bottom:32px;width:1px;height:auto}
+  .route li{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:20px;padding-bottom:28px}
+  .route .dot{grid-row:1 / span 2;margin-bottom:0}
+  .route li:last-child{padding-bottom:0}
+  .layer{grid-template-columns:44px minmax(0,1fr);padding:20px}
+  .layer .chips{grid-column:1 / -1}
+  .layer + .layer::before{left:41px}
+  .layer + .layer::after{left:36px}
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .svc{grid-template-columns:minmax(0,1fr)}
+  .buy{flex-direction:row;align-items:center;flex-wrap:wrap;gap:12px 20px}
+}
+@media (max-width:620px){
+  .bar{grid-template-columns:1fr auto}
+  .links{grid-column:1 / -1;order:3;justify-content:flex-start;gap:20px}
+  .case,.kpis{grid-template-columns:minmax(0,1fr)}
+  .kpi{min-height:0}
+  .tab{padding-block:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="lg"><path class="lg-o" fill-rule="evenodd" d="M2969 826C2791 647 2751 607 2675 531C2629 486 2592 449 2592 448C2592 448 2622 418 2659 381C2697 343 2727 313 2727 312C2727 310 2728 309 2730 309C2732 309 2739 302 2739 301C2739 300 2749 289 2762 277C2774 264 2822 216 2868 170C2914 123 2962 75 2975 62C2988 49 3002 35 3006 30C3011 25 3019 17 3025 12L3035 2L3157 2C3331 1 3331 1 3328 5C3327 8 3143 193 3114 222C3101 234 3078 257 3057 278C3049 287 3038 298 3033 302C3028 307 3015 320 3002 332C2990 345 2967 367 2952 382C2916 417 2885 448 2885 450C2885 451 2904 471 2922 488C2931 497 2942 508 2948 514C2953 520 2976 543 2999 565C3022 588 3056 622 3075 642C3095 661 3158 725 3217 784C3275 842 3322 890 3322 891C3322 891 3257 891 3178 891L3034 891L2969 826Z"/><path class="lg-i" fill-rule="evenodd" d="M83 891C16 891 3 891 2 890C1 888 0 5 2 4C3 2 790 3 808 5C830 7 862 12 876 17C878 17 884 19 888 21C926 32 968 59 993 88C1022 124 1039 163 1046 215C1048 234 1048 273 1046 289C1041 323 1026 362 1011 384C1009 387 1005 392 1003 396C998 403 969 434 964 438C961 440 961 443 964 443C967 443 994 464 1005 475C1019 489 1036 515 1045 536C1046 538 1048 543 1050 548C1056 560 1059 570 1061 585C1070 633 1067 685 1054 728C1038 781 1002 827 955 852C918 873 875 886 834 890C822 891 289 892 83 891ZM2250 891C2247 891 2226 891 2203 891C2162 891 2160 890 2159 889C2159 887 2177 867 2201 844C2210 834 2221 824 2224 820C2229 814 2298 744 2346 695C2373 668 2454 585 2494 544C2509 529 2526 512 2530 508C2534 504 2544 494 2552 485C2561 476 2572 465 2578 459C2583 453 2588 449 2588 448C2588 447 2563 421 2545 403C2535 393 2522 380 2517 375C2512 370 2504 361 2499 357C2494 352 2485 343 2481 338C2476 333 2415 272 2347 203C2223 79 2152 7 2151 5C2150 1 2146 1 2299 1L2446 1L2472 28C2487 43 2553 110 2619 176C2707 265 2740 298 2740 300C2740 303 2734 310 2731 310C2729 310 2728 311 2728 313C2728 314 2699 344 2661 382L2594 448L2667 521C2707 562 2740 595 2740 595C2740 596 2736 600 2732 604C2727 608 2719 616 2714 621C2710 626 2678 658 2645 691C2612 724 2553 783 2515 821L2446 891L2350 891C2297 891 2252 891 2250 891ZM3513 891C3512 891 3511 890 3511 890C3511 889 3510 690 3510 446C3510 16 3510 3 3512 2C3514 1 3534 1 3536 2C3539 3 3539 890 3536 891C3534 892 3516 892 3513 891ZM1122 890C1120 888 1121 619 1122 606C1127 563 1138 527 1155 500C1158 495 1160 491 1160 490C1160 487 1175 466 1188 452C1221 416 1253 396 1306 378C1329 371 1329 371 1348 367C1382 362 1370 362 1632 361C1794 361 1874 361 1878 360C1905 356 1925 343 1935 322C1944 305 1946 297 1947 276C1949 222 1927 195 1880 190C1862 188 1390 189 1380 191C1364 194 1351 201 1339 213C1327 225 1326 229 1321 267L1320 272L1314 273C1305 274 1134 274 1127 273L1122 272L1122 240C1122 198 1123 186 1135 152C1141 133 1144 125 1152 112C1188 51 1249 14 1330 5C1334 5 1341 4 1344 3C1359 2 1907 3 1921 5C1974 11 2009 22 2042 43C2127 96 2161 192 2143 322C2142 332 2132 368 2128 376C2108 425 2076 465 2035 493C2026 499 1981 522 1978 522C1978 522 1975 523 1972 524C1956 531 1930 536 1904 539C1885 541 1878 541 1648 541C1396 542 1408 541 1392 546C1354 556 1329 585 1325 623C1324 628 1324 647 1324 664L1324 695L1327 696C1329 697 1509 697 1725 697C1942 697 2120 698 2120 698C2121 699 2121 888 2121 890C2120 891 1122 892 1122 890ZM4034 847C4004 843 3985 824 3980 796C3978 782 3977 669 3979 667C3981 665 4005 664 4007 666C4008 667 4008 682 4008 725C4008 787 4008 793 4013 802C4025 828 4067 831 4083 808C4091 796 4091 796 4091 728C4091 695 4091 668 4092 667C4093 665 4117 664 4119 666C4121 669 4120 791 4118 799C4107 836 4078 853 4034 847ZM4825 847C4796 843 4779 828 4772 801C4770 793 4770 792 4769 730C4769 657 4767 665 4783 665C4799 665 4797 657 4797 726C4797 794 4797 793 4806 806C4823 830 4862 830 4877 805C4883 795 4883 792 4883 720L4884 666L4896 665C4903 665 4909 665 4910 666C4912 667 4913 778 4911 790C4907 816 4898 831 4879 840C4866 846 4842 849 4825 847ZM3790 844C3789 844 3788 666 3790 666C3792 664 3867 665 3875 666C3901 672 3913 687 3913 713C3913 722 3913 724 3911 729C3908 736 3900 745 3895 748C3890 750 3890 751 3895 752C3908 755 3919 771 3920 789C3921 817 3907 837 3880 843C3873 844 3793 846 3790 844ZM4290 841C4287 837 4281 825 4271 808C4255 782 4253 778 4251 777C4248 775 4219 776 4217 778C4216 779 4215 783 4215 811C4215 848 4217 844 4199 844L4188 844L4188 754L4188 666L4224 665C4276 665 4288 668 4304 684C4316 697 4320 729 4312 746C4306 756 4297 765 4289 769C4286 771 4282 772 4282 773C4282 773 4285 779 4309 819C4326 847 4326 845 4306 845L4293 845L4290 841ZM4382 844C4381 842 4381 668 4382 666C4383 665 4460 664 4482 665L4500 666L4500 677L4500 688L4492 689C4487 690 4467 690 4448 690C4420 690 4412 690 4411 691C4410 693 4409 737 4410 739C4410 739 4422 740 4450 740C4487 741 4489 741 4491 743C4492 745 4492 760 4491 762C4490 764 4482 764 4450 765L4410 766L4410 792C4409 811 4409 818 4410 819C4411 820 4420 821 4457 821C4494 822 4502 822 4503 823C4504 825 4504 842 4503 844C4501 846 4384 846 4382 844ZM4554 844C4552 844 4553 840 4555 836C4556 834 4558 828 4561 822C4563 816 4567 805 4570 798C4574 790 4577 780 4579 776C4580 771 4583 765 4584 762C4585 760 4589 749 4593 738C4615 682 4621 667 4622 667C4624 666 4644 665 4647 665C4648 666 4651 671 4656 684C4664 700 4668 710 4690 766C4694 778 4700 792 4703 800C4706 807 4711 817 4713 823C4715 829 4718 835 4719 837C4722 844 4721 844 4706 845C4691 845 4692 846 4687 833C4679 815 4674 804 4673 802C4671 800 4600 800 4598 802C4597 804 4588 826 4585 837C4582 845 4582 845 4568 845C4561 845 4555 845 4554 844ZM3868 819C3883 816 3890 807 3891 794C3891 785 3890 780 3885 775C3877 766 3867 764 3837 764L3819 764L3818 767C3816 771 3817 819 3819 820C3822 822 3860 821 3868 819ZM4665 778C4665 777 4665 776 4664 775C4664 774 4660 765 4656 756C4653 746 4648 734 4646 728C4644 723 4641 716 4639 712C4638 709 4636 705 4636 704C4635 702 4634 703 4630 717C4622 738 4622 741 4618 749C4615 757 4609 774 4609 776C4609 777 4610 778 4613 778C4619 779 4664 779 4665 778ZM4265 749C4280 745 4286 735 4286 720C4287 707 4281 698 4269 692C4263 690 4262 690 4242 689C4231 689 4220 689 4219 689L4216 690L4216 720L4216 750L4221 751C4231 752 4259 751 4265 749ZM3868 738C3880 732 3884 726 3884 714C3884 706 3884 705 3881 701C3873 691 3866 689 3839 689L3818 690L3817 713C3817 727 3817 738 3817 739C3818 741 3862 740 3868 738ZM786 699C819 694 838 678 849 647C852 638 852 637 852 618C852 595 850 586 842 574C827 552 814 544 782 539C773 537 212 537 210 538C208 540 208 542 208 622C208 675 208 697 209 698C211 700 204 700 497 700C738 700 777 700 786 699ZM4574 531C4550 528 4532 514 4524 491C4523 487 4522 482 4522 481L4522 478L4534 477C4548 477 4550 477 4551 481C4556 504 4590 515 4617 502C4633 495 4637 480 4627 468C4621 461 4615 458 4587 452C4558 445 4546 440 4537 427C4529 417 4527 412 4527 399C4527 377 4539 361 4562 353C4574 349 4601 348 4614 351C4640 358 4655 374 4657 397L4657 404L4644 404C4630 404 4630 404 4629 397C4625 379 4599 368 4576 376C4561 381 4553 394 4557 405C4562 415 4580 424 4608 430C4644 439 4661 455 4661 481C4661 505 4645 524 4619 529C4610 531 4586 532 4574 531ZM4916 531C4876 525 4852 490 4852 438C4852 407 4859 387 4875 370C4888 358 4899 352 4919 350C4964 345 4999 367 5009 406C5014 425 5012 461 5006 480C4999 500 4984 518 4967 525C4955 530 4929 533 4916 531ZM5949 531C5931 527 5922 522 5912 511C5895 493 5889 475 5889 442C5889 406 5896 386 5914 369C5942 342 5997 343 6024 370C6037 383 6041 394 6045 417C6053 477 6033 520 5991 529C5981 532 5959 532 5949 531ZM3827 528C3826 527 3825 517 3825 452L3824 378L3816 377C3811 376 3800 376 3790 376L3773 376L3773 365L3774 354L3776 353C3782 352 3905 352 3907 353C3909 354 3909 355 3909 364C3909 378 3910 378 3890 377C3883 376 3871 376 3865 377L3854 377L3854 452C3854 509 3854 527 3853 528C3851 529 3829 529 3827 528ZM3951 527C3949 525 3950 355 3952 354C3954 352 4023 351 4034 353C4064 358 4079 374 4081 403C4082 427 4073 445 4054 454C4050 456 4047 458 4047 459C4047 459 4058 479 4065 491C4078 512 4083 520 4084 522C4085 522 4085 524 4085 526L4084 528L4072 529C4054 529 4056 530 4046 513C4035 494 4020 468 4017 465L4015 462L3997 462L3980 462L3979 486C3979 499 3978 513 3978 518C3978 522 3978 526 3977 527C3976 529 3952 529 3951 527ZM4118 528C4116 528 4117 524 4120 516C4126 503 4132 488 4138 472C4141 463 4146 452 4148 446C4150 441 4158 421 4166 401C4179 366 4183 356 4184 353C4186 351 4212 352 4214 354C4217 357 4231 390 4231 393C4231 393 4232 395 4233 398C4239 411 4241 416 4247 430C4250 438 4252 445 4253 446C4253 448 4256 453 4258 458C4260 464 4263 470 4264 472C4271 487 4282 520 4282 525C4282 528 4282 528 4274 528C4263 529 4258 529 4256 528C4254 526 4249 516 4243 498C4240 492 4238 488 4237 487C4235 486 4197 486 4176 487L4162 488L4160 492C4159 494 4156 501 4154 506C4150 519 4146 527 4145 528C4143 529 4120 529 4118 528ZM4325 528C4324 526 4324 370 4325 360L4326 354L4339 353C4346 353 4353 353 4354 353C4357 354 4375 379 4395 410C4417 442 4424 452 4429 459C4432 463 4436 469 4439 473C4441 476 4443 479 4444 479C4445 480 4445 460 4445 418C4445 377 4445 355 4446 354C4447 352 4448 352 4459 352C4466 352 4472 352 4472 353C4474 355 4473 527 4472 528C4471 529 4465 529 4457 529L4444 529L4429 507C4420 495 4409 478 4403 470C4386 443 4367 417 4362 411C4359 407 4356 403 4355 402C4353 399 4352 413 4352 477C4352 505 4352 527 4352 528C4351 529 4326 529 4325 528ZM4707 528C4704 526 4704 356 4706 354C4708 352 4818 351 4821 352C4822 353 4822 356 4822 365L4822 376L4778 376C4754 376 4733 377 4733 377C4733 377 4733 388 4733 402C4733 425 4733 428 4735 429C4736 430 4743 430 4771 430C4790 430 4806 430 4807 431C4810 431 4810 452 4808 453C4807 454 4790 454 4771 454C4751 454 4735 454 4734 455C4733 455 4733 463 4733 491C4733 524 4733 527 4731 528C4728 529 4709 529 4707 528ZM5165 528C5165 528 5163 525 5161 522C5159 519 5154 510 5150 502C5145 494 5141 488 5141 488C5141 487 5128 467 5126 464C5125 462 5124 462 5107 462C5093 462 5089 462 5088 463C5087 464 5087 478 5087 494C5087 510 5087 525 5086 526C5086 528 5086 528 5073 528L5060 528L5059 441C5059 362 5059 355 5061 354C5063 352 5137 352 5147 354C5174 361 5188 377 5191 403C5191 411 5189 425 5187 429C5186 430 5185 432 5184 434C5182 440 5173 448 5164 453L5155 457L5157 461C5158 464 5162 469 5165 474C5167 479 5172 487 5175 492C5178 496 5182 504 5185 509C5188 513 5191 518 5192 520C5193 522 5194 524 5194 526L5194 528L5180 529C5173 529 5166 529 5165 528ZM5244 528C5243 527 5243 355 5244 353C5244 353 5251 352 5261 352L5277 351L5281 359C5285 366 5288 374 5294 390C5295 394 5298 401 5300 406C5302 411 5307 422 5311 432C5315 441 5322 456 5326 466C5331 476 5335 485 5336 486C5337 490 5338 490 5344 474C5348 467 5352 458 5354 454C5356 449 5359 443 5360 439C5364 429 5375 402 5380 392C5382 388 5387 377 5391 369C5394 360 5398 353 5398 353C5400 352 5414 352 5423 353C5429 353 5430 354 5431 355C5432 359 5431 526 5430 528C5429 529 5426 529 5416 528L5404 528L5404 516C5404 509 5403 485 5403 462C5403 440 5402 418 5402 415L5402 408L5392 428C5384 445 5370 478 5358 506C5352 520 5350 526 5349 528C5348 529 5345 529 5337 529C5324 529 5325 529 5318 514C5315 508 5310 494 5305 484C5301 475 5297 464 5296 462C5293 454 5288 443 5286 439C5285 437 5283 431 5281 426C5276 415 5273 406 5271 404C5270 402 5269 501 5270 517C5270 529 5270 529 5256 529C5249 529 5244 529 5244 528ZM5472 528C5471 527 5471 523 5472 520C5476 514 5497 462 5503 448C5511 426 5517 410 5520 403C5522 399 5526 389 5529 381C5540 350 5538 352 5554 352L5567 352L5570 357C5571 359 5573 365 5575 369C5577 373 5579 377 5579 378C5580 380 5582 386 5585 392C5589 403 5590 407 5594 416C5595 418 5598 425 5600 432C5609 453 5613 464 5615 468C5615 469 5617 473 5618 476C5619 479 5620 482 5621 484C5625 493 5636 522 5637 526L5637 529L5623 529C5616 529 5609 529 5608 528C5608 528 5605 523 5603 517C5593 492 5592 489 5591 488C5590 486 5543 485 5527 487C5517 487 5516 488 5515 491C5512 496 5509 503 5505 514C5499 530 5500 529 5485 529C5478 529 5472 529 5472 528ZM5701 528L5690 528L5690 516C5690 510 5690 476 5690 442C5690 408 5690 379 5689 378C5689 378 5681 377 5663 377C5648 376 5637 376 5637 375C5636 375 5636 369 5636 363L5636 352L5704 352C5768 352 5772 352 5773 354C5773 355 5773 360 5773 366L5773 376L5770 376C5768 376 5756 377 5742 377L5718 378L5718 442C5717 519 5716 528 5714 529C5712 529 5707 528 5701 528ZM5813 528C5813 527 5813 354 5814 353C5815 351 5840 352 5841 354C5842 356 5842 526 5841 528C5839 529 5814 530 5813 528ZM6092 528C6090 528 6090 355 6092 353C6094 352 6119 351 6121 353C6121 353 6128 363 6136 375C6169 424 6185 447 6196 463L6208 479L6209 476C6210 474 6210 446 6211 413L6212 354L6223 353C6229 352 6235 352 6236 353C6238 353 6238 358 6238 440C6238 488 6238 527 6237 527C6235 529 6210 529 6208 528C6207 528 6201 519 6194 509C6180 489 6159 457 6145 438C6140 430 6132 419 6128 413L6120 402L6120 411C6119 416 6119 444 6119 473C6119 502 6119 527 6119 528C6118 529 6095 530 6092 528ZM4942 506C4968 499 4980 481 4982 443C4984 395 4955 365 4917 377C4894 385 4882 405 4882 438C4882 486 4907 514 4942 506ZM5979 506C6007 500 6021 471 6017 429C6013 390 5997 374 5964 375C5933 377 5917 402 5918 445C5920 490 5943 514 5979 506ZM4227 461C4229 460 4217 427 4205 400C4203 397 4202 392 4201 390C4200 385 4199 386 4197 392C4196 394 4194 400 4192 405C4190 410 4186 422 4182 433C4178 444 4174 454 4174 456C4173 459 4172 461 4173 461C4173 462 4225 462 4227 461ZM5582 460C5582 460 5581 458 5581 456C5580 454 5577 448 5575 442C5573 437 5570 430 5569 428C5567 424 5560 405 5556 394C5554 387 5554 388 5551 397C5549 401 5546 408 5544 412C5541 420 5527 459 5527 460C5527 461 5539 461 5554 461C5572 461 5582 461 5582 460ZM4030 436C4043 431 4051 423 4052 410C4053 393 4044 381 4026 378C4018 376 3982 377 3980 379C3979 380 3978 429 3979 434C3979 435 3980 437 3981 437C3985 439 4025 437 4030 436ZM5139 436C5154 431 5161 421 5161 406C5161 394 5153 382 5140 378C5135 377 5092 376 5089 378C5088 378 5088 434 5089 436C5090 438 5131 438 5139 436ZM764 357C814 353 842 320 840 267C838 220 822 200 782 192C770 190 213 190 210 192C209 193 208 201 208 275L208 356L220 357C240 358 751 358 764 357ZM4862 214C4837 210 4818 190 4816 166C4815 162 4815 159 4816 159C4816 158 4822 158 4829 157C4842 157 4844 157 4844 162C4844 179 4865 192 4888 191C4909 190 4920 183 4923 168C4926 153 4918 145 4893 138C4865 130 4859 129 4853 126C4831 116 4822 104 4822 83C4822 49 4843 31 4886 32C4923 32 4947 47 4951 74C4953 85 4953 85 4938 85C4929 85 4927 84 4926 83C4917 63 4907 56 4887 56C4857 56 4841 77 4856 95C4860 101 4868 104 4888 109C4940 122 4953 133 4953 165C4953 187 4943 201 4922 209C4907 215 4879 217 4862 214ZM5052 215C5023 211 5003 193 5000 167C4998 157 4999 157 5012 157C5024 157 5026 158 5026 162C5026 169 5035 181 5044 186C5058 193 5083 193 5095 185C5108 176 5111 158 5101 149C5095 143 5088 140 5059 133C5021 123 5007 110 5005 85C5004 51 5026 31 5067 31C5106 31 5133 50 5133 78L5134 84L5120 84L5108 84L5106 79C5097 50 5044 48 5035 77C5029 92 5042 102 5076 111C5119 121 5130 128 5134 149C5142 181 5122 208 5089 214C5080 215 5060 216 5052 215ZM4015 214C3990 209 3973 194 3967 170C3965 163 3965 161 3965 100C3965 65 3965 37 3965 36C3966 34 3989 35 3991 36C3993 37 3993 43 3993 97C3994 164 3993 162 4001 174C4012 191 4040 196 4059 185C4065 182 4073 173 4076 166L4078 160L4079 99C4079 43 4079 37 4081 36C4083 35 4106 35 4107 36C4109 39 4107 162 4105 170C4100 191 4084 207 4062 212C4056 214 4023 215 4015 214ZM4206 214C4191 211 4181 206 4173 198C4166 191 4158 176 4157 167C4155 157 4156 157 4170 157C4182 157 4185 158 4185 161C4185 165 4191 175 4195 179C4208 193 4238 195 4254 185C4275 171 4268 146 4241 140C4238 139 4231 137 4224 135C4176 124 4160 109 4161 79C4162 56 4178 39 4202 33C4249 23 4293 45 4293 80C4293 85 4293 85 4279 85C4267 86 4265 85 4265 80C4265 75 4256 63 4247 59C4238 54 4218 54 4207 59C4194 65 4187 78 4192 88C4196 98 4206 102 4229 108C4279 120 4292 129 4295 155C4299 184 4283 206 4256 213C4246 215 4215 215 4206 214ZM3788 213C3787 212 3786 38 3788 36C3788 36 3803 35 3826 35C3867 34 3874 35 3887 41C3917 56 3920 101 3892 116C3886 119 3886 119 3891 120C3910 125 3921 151 3915 176C3910 196 3897 208 3874 211C3865 213 3791 214 3788 213ZM4352 213C4348 213 4347 213 4346 211C4346 207 4346 37 4347 36C4349 35 4372 35 4373 36C4375 38 4376 210 4373 212C4372 214 4366 214 4352 213ZM4553 211C4551 209 4546 202 4541 195C4537 187 4531 179 4528 176C4520 165 4503 140 4476 99C4470 91 4465 84 4465 84C4464 84 4463 147 4463 181C4463 197 4463 211 4463 212C4462 213 4437 214 4437 212C4436 211 4436 37 4436 36C4437 35 4462 34 4464 35C4466 36 4476 49 4492 74C4500 85 4510 101 4516 108C4521 116 4530 128 4534 134C4539 141 4544 149 4547 153C4550 157 4552 160 4553 162C4553 163 4554 137 4554 100C4555 49 4555 37 4556 36C4558 35 4582 35 4583 36C4584 38 4583 212 4582 213C4581 214 4575 214 4568 214L4556 214L4553 211ZM4643 212C4642 210 4642 37 4644 36C4645 34 4760 35 4762 36C4763 37 4764 58 4762 58C4762 59 4742 59 4718 59C4686 60 4674 60 4673 61C4671 63 4670 105 4673 107C4674 109 4679 109 4712 109C4740 109 4749 110 4750 111C4752 113 4753 132 4751 133C4750 134 4732 134 4711 134C4690 134 4673 134 4672 134C4671 135 4671 144 4671 161C4671 186 4671 187 4673 188C4674 189 4690 189 4719 189C4743 189 4763 189 4763 190C4764 190 4764 196 4764 202L4764 212L4704 213C4657 213 4644 213 4643 212ZM3868 186C3895 175 3894 143 3866 134C3860 132 3820 131 3817 133C3816 133 3816 140 3816 161L3816 187L3820 188C3827 190 3863 188 3868 186ZM3866 107C3888 97 3887 69 3866 62C3858 59 3819 58 3817 60C3815 63 3815 105 3817 107C3819 110 3860 109 3866 107Z"/></g></defs></svg>
+
+<header class="w">
+  <div class="bar">
+    <a href="#top" aria-label="B2X — Business Transformation Bureau"><svg class="lg" viewBox="0 0 6240 894" role="img" aria-label="B2X Business Transformation Bureau"><use href="#lg"/></svg></a>
+    <nav class="links" aria-label="Мессенджеры">
+      <a href="#">Телеграм</a><a href="#">Ватсап</a><a href="#">Инстаграм</a>
+    </nav>
+    <a class="btn btn-dark" href="tel:+77086442654">+7 708 644 26 54</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- 1 -->
+  <section class="glow hero-pad" style="--gx:58%;--gy:-30%;--hx:-18%;--hy:30%">
+    <div class="hero w">
+      <p class="free"><b>Бесплатно</b><span>Онлайн-анкета | 3 минуты</span></p>
+      <h1>Покажем, где ваш сайт теряет заявки</h1>
+      <p class="lead">Ответьте на вопросы анкеты, и вы получите персональную карту роста заявок: чего не хватает, что автоматизировать и что исправить в первую очередь.</p>
+      <div class="btns"><a class="btn" href="#start">Получить карту роста заявок <span aria-hidden="true">→</span></a></div>
+      <svg class="mk" viewBox="0 0 3339 894" role="img" aria-label="B2X"><use href="#lg"/></svg>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="sec band glow" id="route" aria-labelledby="h-route" style="--gx:-10%;--gy:-30%;--hx:70%;--hy:30%">
+    <div class="w">
+      <div class="route-head">
+        <p class="eyebrow">Путь клиента</p>
+        <h2 id="h-route">Клиент может уйти к конкуренту на любом шаге</h2>
+      </div>
+      <ol class="route">
+        <li><span class="dot">01</span><h3>Поиск</h3><p>Человек ищет, например, «кухни на заказ в Алматы».</p></li>
+        <li><span class="dot">02</span><h3>Знакомство</h3><p>Видит вашу рекламу в Google и заходит на сайт.</p></li>
+        <li><span class="dot">03</span><h3>Сравнение</h3><p>Смотрит работы, цены и условия, открывает сайты конкурентов.</p></li>
+        <li><span class="dot">04</span><h3>Решение</h3><p>Хочет узнать стоимость и отправляет запрос.</p></li>
+        <li><span class="dot">05</span><h3>Общение</h3><p>Ждёт ответа, уточняет детали, получает предложение.</p></li>
+        <li><span class="dot">06</span><h3>Заказ</h3><p>Выбирает вас и подписывает договор.</p></li>
+      </ol>
+      <div class="route-foot">
+        <p>На каждом шаге есть место, где клиент может передумать. Найдём такие места у вас.</p>
+        <a class="btn" href="#start">Получить бесплатную проверку <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="sec w" aria-labelledby="h-break">
+    <h2 id="h-break">Где может оборваться маршрут</h2>
+    <p class="sub">Выберите шаг и посмотрите, что на нём обычно идёт не так.</p>
+    <div class="break">
+      <div class="tabs" role="tablist" aria-label="Шаги маршрута" id="tabs"></div>
+      <div class="pcol">
+        <div class="panel" id="panel" role="tabpanel" aria-live="polite"></div>
+        <a class="btn" href="#start">Проверить мой сайт <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="sec band glow" aria-labelledby="h-sys" style="--gx:55%;--gy:20%;--hx:-10%;--hy:-10%">
+    <div class="w">
+      <div class="sys-head">
+        <p class="eyebrow">Как это устроено</p>
+        <h2 id="h-sys">Реклама, сайт и CRM работают вместе, а не каждый сам по себе</h2>
+      </div>
+      <ol class="layers">
+        <li class="layer"><span class="n">01</span><h3>Вас находят</h3><ul class="chips"><li>Реклама</li><li>SEO</li><li>нейросети (GEO)</li><li>каталоги</li></ul></li>
+        <li class="layer"><span class="n">02</span><h3>Вам верят</h3><ul class="chips"><li>Лендинг</li><li>понятное предложение</li><li>контент</li><li>калькуляторы</li></ul></li>
+        <li class="layer"><span class="n">03</span><h3>Заявку не теряют</h3><ul class="chips"><li>ИИ-консультант</li><li>CRM</li><li>боты</li><li>интеграции</li></ul></li>
+        <li class="layer"><span class="n">04</span><h3>Цифры видны</h3><ul class="chips"><li>Аналитика</li><li>конверсия</li><li>цена заявки</li></ul></li>
+      </ol>
+      <div class="sys-foot">
+        <p>Мы продумываем всю цепочку, подбираем инструменты, соединяем их и проверяем, как она работает целиком.</p>
+        <a class="btn" href="#directions">Выбрать, с чего начать <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="sec w" id="directions" aria-labelledby="h-sc">
+    <p class="eyebrow">Три направления</p>
+    <h2 id="h-sc" class="sc-head">С чего начнём, зависит от вашей ситуации</h2>
+    <p class="sc-q">У вас уже есть сайт, реклама и CRM?</p>
+    <ul class="sc">
+      <li>
+        <span class="eyebrow">Вариант 01</span>
+        <p class="ans">Есть, но заявок мало или они дорогие.</p>
+        <h3>Починим то, что уже есть</h3>
+        <p class="d">Найдём, где теряются клиенты, исправим ошибки в рекламе и на сайте, подключим автоматизацию.</p>
+        <a class="btn btn-line" href="#start">Обсудить мой случай <span aria-hidden="true">→</span></a>
+      </li>
+      <li>
+        <span class="eyebrow">Вариант 02</span>
+        <p class="ans">Ничего нет, нужна система с нуля.</p>
+        <h3>Соберём под ключ</h3>
+        <p class="d">Разберёмся в нише, предложении и аудитории, посчитаем экономику, спроектируем путь клиента, соберём всё нужное и запустим.</p>
+        <a class="btn btn-line" href="#start">Обсудить запуск <span aria-hidden="true">→</span></a>
+      </li>
+      <li>
+        <span class="eyebrow">Вариант 03</span>
+        <p class="ans">Нужно запуститься быстро.</p>
+        <h3>Запустим по готовой схеме</h3>
+        <p class="d">У нас есть заготовка для вашей отрасли: структура сайта, лид-магниты, сценарии бота, CRM и аналитика. Подстроим под ваш бизнес и запустим. Так быстрее и дешевле, чем с нуля.</p>
+        <a class="btn btn-line" href="#start">Узнать про готовую схему <span aria-hidden="true">→</span></a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 6 method -->
+  <section class="sec band glow" aria-labelledby="h-method" style="--gx:-12%;--gy:-20%;--hx:75%;--hy:50%">
+    <div class="w two">
+      <div class="two-l">
+        <p class="eyebrow">Как мы работаем</p>
+        <h2 id="h-method">Пять шагов</h2>
+        <a class="btn" href="#start">Начать с бесплатной проверки <span aria-hidden="true">→</span></a>
+      </div>
+      <ol class="steps">
+        <li><span class="no">01 —</span><h3>Диагностика</h3><p>Смотрим на всё сразу: рекламу, сайт, предложение, обработку заявок и CRM. Ищем, почему обращений мало, заявка выходит дорогой и на каком шаге вы теряете людей.</p></li>
+        <li><span class="no">02 —</span><h3>Проектирование</h3><p>Продумываем схему под вашу нишу, аудиторию и бюджет. Решаем, какие каналы и инструменты нужны, чтобы заявок было больше, а затраты разумными.</p></li>
+        <li><span class="no">03 —</span><h3>Сборка и улучшение</h3><p>Собираем воронку из нужных частей или берём готовую для отрасли. Проверяем идеи на практике, считаем конверсию и цену заявки, правим слабые места.</p></li>
+        <li><span class="no">04 —</span><h3>Автоматизация и ИИ</h3><p>Подключаем ИИ-бота, CRM и автоматические сценарии. Клиент получает ответ сразу, запросы сортируются, заявки сами уходят менеджерам и не теряются.</p></li>
+        <li><span class="no">05 —</span><h3>Сопровождение</h3><p>Следим за цифрами, разбираем, что изменилось, и вносим улучшения. Усиливаем то, что работает, и подстраиваемся под спрос и рекламные каналы.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7 logic -->
+  <section class="sec w" aria-labelledby="h-logic">
+    <div class="two">
+      <div class="two-l">
+        <h2 id="h-logic">Сначала находим причину, потом что-то меняем</h2>
+        <a class="btn btn-line" href="#start">Найти причину у меня <span aria-hidden="true">→</span></a>
+      </div>
+      <div>
+        <div class="start"><span class="eyebrow">Пример</span><p>Реклама работает, посетители приходят, а заявок мало.</p></div>
+        <ol class="steps">
+          <li><span class="no">01 —</span><h3>Догадка</h3><p class="hyp">Люди не понимают, сколько это будет стоить.</p></li>
+          <li><span class="no">02 —</span><h3>Проверка</h3><p>Смотрим страницу, предложение, формы и то, как люди ведут себя на сайте.</p></li>
+          <li><span class="no">03 —</span><h3>Правка</h3><p>Добавляем предварительный расчёт стоимости и простой путь к предложению.</p></li>
+          <li><span class="no">04 —</span><h3>Результат</h3><p>Сравниваем, сколько людей оставляют заявку до правок и после.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 services -->
+  <section class="sec w" id="services" aria-labelledby="h-cat" style="padding-top:0">
+    <div class="cat-head">
+      <p class="eyebrow">Услуги и цены</p>
+      <h2 id="h-cat">Что можно улучшить</h2>
+    </div>
+    <div class="acc">
+      <details open>
+        <summary><span>Аналитика<small>находим точки роста</small></span></summary>
+        <ul class="svcs">
+          <li class="svc"><h4>Аудит воронки продаж</h4><p>Разберём сайт, рекламу и путь клиента, найдём потери и дадим план улучшений.</p><div class="buy"><span class="price">от 150 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать аудит</a></div></li>
+          <li class="svc"><h4>Конкурентная разведка</h4><p>Посмотрим, что предлагают конкуренты, где рекламируются и как привлекают клиентов.</p><div class="buy"><span class="price">от 120 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать разведку</a></div></li>
+          <li class="svc"><h4>GEO/AEO-аудит</h4><p>Проверим, упоминают ли вас нейросети, и найдём, как попасть в их ответы.</p><div class="buy"><span class="price">от 100 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать аудит</a></div></li>
+          <li class="svc free"><h4>Карта роста заявок</h4><p>Бесплатная проверка по 30 критериям и план из трёх первых улучшений.</p><div class="buy"><span class="price">Бесплатно</span><a class="btn btn-sm" href="#start">Получить карту</a></div></li>
+        </ul>
+      </details>
+      <details>
+        <summary><span>Оптимизация<small>превращаем трафик в заявки</small></span></summary>
+        <ul class="svcs">
+          <li class="svc"><h4>Умные лендинги для лидогенерации</h4><p>Страницы, которые собирают заявки: от структуры до разработки.</p><div class="buy"><span class="price">от 300 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать лендинг</a></div></li>
+          <li class="svc"><h4>CRO: оптимизация конверсии</h4><p>Улучшаем сайт, формы, кнопки и сценарии, чтобы больше людей оставляли заявку.</p><div class="buy"><span class="price">от 200 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать CRO</a></div></li>
+          <li class="svc"><h4>Персонализация сайта</h4><p>Сайт показывает разным посетителям разное: по интересам, источнику перехода и группе клиентов.</p><div class="buy"><span class="price">от 200 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать</a></div></li>
+          <li class="svc"><h4>Контекстная реклама</h4><p>Настраиваем и ведём рекламу, чтобы приводить тех, кто готов купить.</p><div class="buy"><span class="price">от 120 000 ₸/мес.</span><a class="btn btn-line btn-sm" href="#start">Запустить рекламу</a></div></li>
+          <li class="svc"><h4>SEO-продвижение</h4><p>Поднимаем сайт в поиске и приводим клиентов без оплаты за каждый клик.</p><div class="buy"><span class="price">от 175 000 ₸/мес.</span><a class="btn btn-line btn-sm" href="#start">Заказать SEO</a></div></li>
+          <li class="svc"><h4>GEO/AEO-продвижение</h4><p>Готовим сайт и тексты так, чтобы нейросети чаще упоминали вас в ответах.</p><div class="buy"><span class="price">от 250 000 ₸/мес.</span><a class="btn btn-line btn-sm" href="#start">Заказать</a></div></li>
+          <li class="svc"><h4>Расширение цифрового присутствия</h4><p>Выводим бренд в каталоги, справочники, отраслевые площадки и экспертные статьи.</p><div class="buy"><span class="price">от 150 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать</a></div></li>
+        </ul>
+      </details>
+      <details>
+        <summary><span>Автоматизация<small>ускоряем обработку заявок</small></span></summary>
+        <ul class="svcs">
+          <li class="svc"><h4>ИИ-консультант 24/7</h4><p>Бот на ИИ отвечает клиентам, уточняет, что им нужно, и собирает заявки.</p><div class="buy"><span class="price">от 300 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать бота</a></div></li>
+          <li class="svc"><h4>Настройка аналитики и CRM</h4><p>Настраиваем передачу заявок, связываем каналы и автоматизируем работу с обращениями.</p><div class="buy"><span class="price">от 250 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать настройку</a></div></li>
+          <li class="svc"><h4>Автоматизация расчётов и предложений</h4><p>Клиент вводит параметры заказа и сразу получает предварительный расчёт и персональное предложение.</p><div class="buy"><span class="price">от 200 000 ₸</span><a class="btn btn-line btn-sm" href="#start">Заказать</a></div></li>
+          <li class="svc"><h4>Ежемесячная оптимизация</h4><p>Каждый месяц следим за показателями, проводим тесты, смотрим качество заявок и улучшаем сайт, рекламу и автоматизацию.</p><div class="buy"><span class="price">от 150 000 ₸/мес.</span><a class="btn btn-line btn-sm" href="#start">Подключить</a></div></li>
+        </ul>
+      </details>
+    </div>
+    <div class="cat-end">
+      <p>Не знаете, что выбрать? Начните с бесплатной карты.</p>
+      <a class="btn" href="#start">Получить карту роста заявок <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- 9 proof -->
+  <section class="sec band glow" aria-labelledby="h-proof" style="--gx:60%;--gy:-25%;--hx:-12%;--hy:40%">
+    <div class="w">
+      <div class="proof-head">
+        <p class="eyebrow">Результаты</p>
+        <h2 id="h-proof">Покажем изменения в цифрах</h2>
+      </div>
+      <div class="proof">
+        <dl class="case">
+          <div><dt>С чем пришёл бизнес</dt><dd>Место для описания реального кейса</dd></div>
+          <div><dt>Где нашли проблему</dt><dd>Место для описания реального кейса</dd></div>
+          <div><dt>Что изменили</dt><dd>Место для описания реального кейса</dd></div>
+          <div><dt>Что получилось</dt><dd>Место для подтверждённых цифр</dd></div>
+        </dl>
+        <div class="kpis">
+          <div class="kpi"><strong>—</strong><span>Показатель кейса</span></div>
+          <div class="kpi"><strong>—</strong><span>Показатель кейса</span></div>
+          <div class="kpi"><strong>—</strong><span>Показатель кейса</span></div>
+        </div>
+      </div>
+      <div class="proof-foot">
+        <p>Здесь будут только реальные проекты и подтверждённые цифры.</p>
+        <a class="btn" href="#start">Обсудить мой проект <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="sec w glow" id="start" aria-labelledby="h-cta" style="--gx:30%;--gy:-30%;--hx:70%;--hy:20%">
+    <div class="cta-card">
+      <div>
+        <p class="eyebrow">Бесплатно · 3 минуты</p>
+        <h2 id="h-cta">Начните с карты роста заявок</h2>
+      </div>
+      <div>
+        <p>Ответьте на вопросы анкеты. Мы проверим 30 критериев и покажем три изменения, с которых лучше начать.</p>
+        <div class="btns"><a class="btn" href="#">Получить карту роста заявок <span aria-hidden="true">→</span></a><a class="btn btn-line" href="#">Написать в Телеграм</a></div>
+        <p class="alt">Или позвоните: <a href="tel:+77086442654">+7 708 644 26 54</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="w">
+    <div class="foot">
+      <a href="#top" aria-label="B2X — Business Transformation Bureau"><svg class="lg" viewBox="0 0 6240 894" role="img" aria-label="B2X Business Transformation Bureau"><use href="#lg"/></svg></a>
+      <nav class="links" aria-label="Контакты"><a href="#">Телеграм</a><a href="#">Ватсап</a><a href="#">Инстаграм</a></nav>
+      <a class="btn btn-dark" href="tel:+77086442654">+7 708 644 26 54</a>
+    </div>
+    <svg class="mk" viewBox="0 0 3339 894" role="img" aria-label="B2X"><use href="#lg"/></svg>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var stages=[
+    {n:"01",name:"Поиск",lead:"Человек ищет вас в интернете. Находит ли он вас?",
+      bad:["Вас нет на первых местах в поиске и в рекламе.","Нейросети не называют вас, когда у них просят совет.","В каталогах и на картах вас нет или данные устарели.","Реклама показывается тем, кто не собирается покупать."],
+      checks:"Рекламу, SEO, видимость в нейросетях и каталогах. Кто и по каким запросам вас видит."},
+    {n:"02",name:"Знакомство",lead:"Человек нажал на объявление. Что он увидел первым?",
+      bad:["Заголовок не отвечает на то, что человек искал.","Страница долго грузится, особенно с телефона.","Непонятно, чем вы занимаетесь и для кого.","Реклама обещает одно, а на сайте другое."],
+      checks:"Как объявление связано со страницей, скорость загрузки и первый экран: понятно ли за пару секунд, что вы предлагаете."},
+    {n:"03",name:"Сравнение",lead:"Посетитель открыл ваш сайт. Что он увидел?",
+      bad:["Не увидел ориентировочную стоимость.","Не понял, чем вы отличаетесь от других.","Не нашёл примеров подходящих проектов.","Не смог быстро запросить расчёт."],
+      checks:"Структуру сайта, предложение, цены и условия, путь по странице, формы и кнопки."},
+    {n:"04",name:"Решение",lead:"Человек готов узнать цену. Легко ли ему спросить?",
+      bad:["Форма слишком длинная или неудобна на телефоне.","Нет калькулятора и даже вилки цен.","Непонятно, что будет после отправки заявки.","Нет другого способа связаться: мессенджера или звонка."],
+      checks:"Формы, кнопки, калькуляторы и то, куда попадает заявка после отправки."},
+    {n:"05",name:"Общение",lead:"Заявка пришла. Как быстро и как на неё ответили?",
+      bad:["Ответ приходит через несколько часов, клиент уже ушёл.","Менеджеры отвечают каждый по-своему.","Заявки теряются между сайтом, мессенджером и CRM.","Клиенту, который «пошёл подумать», никто не напоминает."],
+      checks:"Скорость ответа, сценарии общения, работу CRM и ботов, передачу заявок менеджерам."},
+    {n:"06",name:"Заказ",lead:"Клиент почти выбрал вас. Что может помешать?",
+      bad:["Предложение пришло в неудобном виде или без понятных условий.","Клиент не знает, как оформить договор.","Сомнения остались без ответа: сроки, гарантии, цена.","Неизвестно, из какой рекламы пришли те, кто купил."],
+      checks:"Как выглядят предложения, сколько заявок доходит до договора и откуда приходят клиенты, которые покупают."}
+  ];
+  var tabs=document.getElementById("tabs"),panel=document.getElementById("panel");
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+  function show(i){
+    var s=stages[i];
+    panel.innerHTML='<span class="tag">Шаг '+s.n+' · '+s.name+'</span><h3>'+esc(s.lead)+'</h3>'
+      +'<div><h4>Что может пойти не так</h4><ul class="bad">'+s.bad.map(function(b){return '<li>'+esc(b)+'</li>'}).join('')+'</ul></div>'
+      +'<div><h4>Что мы проверяем</h4><p class="checks">'+esc(s.checks)+'</p></div>';
+    Array.prototype.forEach.call(tabs.children,function(b,j){
+      b.setAttribute("aria-selected",j===i?"true":"false");
+      b.tabIndex=j===i?0:-1;
+    });
+  }
+  stages.forEach(function(s,i){
+    var b=document.createElement("button");
+    b.className="tab";b.type="button";b.setAttribute("role","tab");
+    b.innerHTML='<span>'+s.n+'</span>'+s.name;
+    b.addEventListener("click",function(){show(i)});
+    b.addEventListener("keydown",function(e){
+      var k=e.key,n=i;
+      if(k==="ArrowDown"||k==="ArrowRight")n=(i+1)%stages.length;
+      else if(k==="ArrowUp"||k==="ArrowLeft")n=(i-1+stages.length)%stages.length;
+      else return;
+      e.preventDefault();show(n);tabs.children[n].focus();
+    });
+    tabs.appendChild(b);
+  });
+  show(2);
+})();
+</script>
+
+</body></html>
